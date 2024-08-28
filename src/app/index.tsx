@@ -1,11 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import ProfileCard from '../components/ProfileCard'
+import ListData from '../components/ListData'
+import ArrayOfObjects from '../components/ArrayOfObject'
+import HugeList from '../components/HugeList'
 
 const index = () => {
   return (
     <View style={styles.body}>
-      <ProfileCard />
+    
+      <HugeList />
     </View>
   )
 }
