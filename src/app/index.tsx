@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Card from '../components/Card'
 import MyButton from '../components/MyButton'
+import MyImages from '../components/MyImages'
 
 const index = () => {
   return (
@@ -10,6 +11,7 @@ const index = () => {
       <Card>myAge</Card>
       <Card>myFav</Card>
       <MyButton/>
+      <MyImages/>
     </View>
   )
 }
