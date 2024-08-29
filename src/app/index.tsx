@@ -1,14 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import ListData from '../components/ListData'
-import ArrayOfObjects from '../components/ArrayOfObject'
-import HugeList from '../components/HugeList'
+import MyEffect from '../components/MyEffect'
 
 const index = () => {
   return (
     <View style={styles.body}>
     
-      <HugeList />
+      <MyEffect />
     </View>
   )
 }
