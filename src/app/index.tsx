@@ -1,12 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import MyEffect from '../components/MyEffect'
+import DataFetching from '../components/DataFetching'
 
 const index = () => {
   return (
     <View style={styles.body}>
     
-      <MyEffect />
+      {/* <MyEffect /> */}
+      <DataFetching />
     </View>
   )
 }
