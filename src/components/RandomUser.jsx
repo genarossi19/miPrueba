@@ -1,11 +1,58 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
-
+import { StyleSheet, Text, View, Image, FlatList } from "react-native";
+import { useState, useEffect } from "react";
+import axios from "axios";
 const RandomUser = () => {
+  //estado de los usuarios (carga inicialmente vacía)
+  const [users, setUsers] = useState([]);
+  //estado de la carga (booleano)
+  const [loading, setLoading] = useState(true);
+  //estado del error
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get(
+          "https://randomuser.me/api/?results=50"
+        );
+        setUsers(response.data.results);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUsers();
+  }, []);
+
+  if (loading) {
+    return <Text>Cargando...</Text>;
+  }
+
+  if (error) {
+    return <Text>Error: {error}</Text>;
+  }
+
+  const renderItem = ({ item }) => {
+    return (
+      <View style={styles.itemContainer}>
+        <Image source={{ uri: item.picture.large }} style={styles.avatar} />
+        <View style={styles.infoContainer}>
+          <Text style={styles.name}>
+            {item.name.first} {item.name.last}
+          </Text>
+          <Text style={styles.email}>{item.email}</Text>
+        </View>
+      </View>
+    );
+  };
+
   return (
-    <View>
-      <Text>RandomUser</Text>
-    </View>
+    <FlatList
+      data={users}
+      keyExtractor={(item) => item.email}
+      renderItem={renderItem}
+    />
   );
 };
 

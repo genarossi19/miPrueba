@@ -4,7 +4,7 @@ import RandomUser from "../components/RandomUser";
 
 const index = () => {
   return (
-    <View style={styles.body}>
+    <View>
       {/* <MyEffect /> */}
       {/* <DataFetching /> */}
       <RandomUser />
