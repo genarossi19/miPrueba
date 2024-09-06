@@ -1,50 +1,113 @@
-# Welcome to your Expo app 👋
+# React Native
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## useReducer
 
-## Get started
+### Sintaxis basica del useReducer
 
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```js
+const [state, dispatch] = useReducer(reducer, initialState);
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Desglosemos los elementos:
 
-## Learn more
+1. `reducer`: Es una función que toma dos parámetros: el estado actual (state) y una acción (action). El reducer define cómo el estado cambia en función de la acción que se le envía.
 
-To learn more about developing your project with Expo, look at the following resources:
+2. `initialState`: Es el valor inicial del estado que usará el reducer. Este valor puede ser cualquier tipo de dato (objeto, array, número, string, etc.).
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+3. `state`: Es el valor del estado actual después de que el reducer haya procesado las acciones anteriores. Lo obtienes a través de la desestructuración al llamar a useReducer.
 
-## Join the community
+4. `dispatch`: Es la función que se usa para enviar una acción al reducer. Cuando llamas a dispatch, estás indicando que algo ha ocurrido (como un clic en un botón) y quieres que el reducer actualice el estado en consecuencia.
 
-Join our community of developers creating universal apps.
+### Ejemplo Basico : contador
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```jsx
+import React, { useReducer } from "react";
+
+// Definir el estado inicial
+//El estado inicial es un objeto con una propiedad count que comienza en 0.
+const initialState = { count: 0 };
+
+// Reducer: una función que toma state y action
+
+/*El reducer toma el estado actual y una acción.
+Dependiendo del tipo de acción (INCREMENT o DECREMENT), actualiza el estado.
+Siempre devuelve un nuevo estado. ¡Nunca muta el estado actual directamente!
+Si no se reconoce la acción (default), simplemente devuelve el estado actual sin cambios.*/
+function reducer(state, action) {
+  switch (action.type) {
+    case "INCREMENT":
+      return { count: state.count + 1 };
+    case "DECREMENT":
+      return { count: state.count - 1 };
+    default:
+      return state;
+  }
+}
+//EN EL COMPONENTE
+function Counter() {
+  // state es el estado actual que el reducer maneja.
+  // dispatch es la función que usas para enviar una acción al reducer.
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  return (
+    <div>
+      <p>Count: {state.count}</p>
+      {/*ENVIANDO ACCIONES*/}
+      {/*Cada botón usa dispatch para enviar una acción al reducer. La acción es un objeto con una propiedad type que indica qué debe hacer el reducer.*/}
+      <button onClick={() => dispatch({ type: "INCREMENT" })}>Increment</button>
+      <button onClick={() => dispatch({ type: "DECREMENT" })}>Decrement</button>
+    </div>
+  );
+}
+
+export default Counter;
+```
+
+### VARIANTES DE LA SINTAXIS
+
+1. Con la funcion reducer directamente en e; `useReducer`
+
+```jsx
+const [state, dispatch] = useReducer(
+  (state, action) => {
+    switch (action.type) {
+      case "INCREMENT":
+        return { count: state.count + 1 };
+      case "DECREMENT":
+        return { count: state.count - 1 };
+      default:
+        return state;
+    }
+  },
+  { count: 0 }
+);
+```
+
+2. Acciones mas complejas
+
+```jsx
+function reducer(state, action) {
+  switch (action.type) {
+    case "ADD_TODO":
+      return {
+        ...state,
+        todos: [...state.todos, { text: action.payload, completed: false }],
+      };
+    default:
+      return state;
+  }
+}
+
+// Dispatch de una acción con un payload
+dispatch({ type: "ADD_TODO", payload: "Nueva tarea" });
+```
+
+### Resumen
+
+- useReducer
+
+* `useReducer` toma una función `reducer` (que define cómo actualizar el estado) y un `initialState`.
+* La función `reducer` recibe dos parámetros: el `state` actual y una `action` (que define qué tipo de cambio debe ocurrir).
+* `dispatch` se usa para enviar acciones al reducer. Las acciones son objetos que típicamente contienen un `type` y, a veces, un `payload`.
+* `useReducer` es útil cuando tienes un estado más complejo o múltiples acciones que afectan el estado, en lugar de usar múltiples `useState`.
